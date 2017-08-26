@@ -34,9 +34,7 @@ module UserMutations
       user = User.find_by_id(inputs[:id])
       return { errors: 'User not found' } if user.nil?
 
-      valid_inputs = ActiveSupport::HashWithIndifferentAccess.new(inputs.instance_variable_get(:@original_values).select { |k, _| user.respond_to? "#{k}=".underscore }).except(:id)
-
-      if user.update_attributes(valid_inputs)
+      if user.update_attributes(name: inputs[:name], email: inputs[:email])
         { user: user }
       else
         { errors: user.errors.to_a }
