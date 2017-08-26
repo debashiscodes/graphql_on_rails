@@ -4,6 +4,9 @@ MutationType = GraphQL::ObjectType.define do
 
 
   field :addUser, field: UserMutations::Create.field
-  field :addPost, field: PostMutations::Create.field
+  field :updateUser, field: UserMutations::Update.field
   field :destroyUser, field: UserMutations::Destroy.field
+
+  field :addPost, field: PostMutations::Create.field
+
 end

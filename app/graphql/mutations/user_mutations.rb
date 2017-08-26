@@ -20,6 +20,30 @@ module UserMutations
     }
   end
 
+  Update = GraphQL::Relay::Mutation.define do
+    name "UpdateUser"
+
+    input_field :id, !types.ID
+    input_field :name, types.String
+    input_field :email, types.String
+
+    return_field :user, UserType
+
+
+    resolve ->(object, inputs, ctx) {
+      user = User.find_by_id(inputs[:id])
+      return { errors: 'User not found' } if user.nil?
+
+      valid_inputs = ActiveSupport::HashWithIndifferentAccess.new(inputs.instance_variable_get(:@original_values).select { |k, _| user.respond_to? "#{k}=".underscore }).except(:id)
+
+      if user.update_attributes(valid_inputs)
+        { user: user }
+      else
+        { errors: user.errors.to_a }
+      end
+    }
+  end
+
   Destroy = GraphQL::Relay::Mutation.define do
     name 'DestroyUser'
     description 'Delete a user'
