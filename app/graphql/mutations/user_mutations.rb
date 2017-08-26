@@ -19,4 +19,23 @@ module UserMutations
       end
     }
   end
+
+  Destroy = GraphQL::Relay::Mutation.define do
+    name 'DestroyUser'
+    description 'Delete a user'
+
+    input_field :id, !types.ID
+
+    return_field :deletedId, !types.ID
+    return_field :errors, types.String
+
+    resolve ->(_obj, inputs, ctx) {
+      user = User.find_by_id(inputs[:id])
+      return { errors: 'User not found' } if user.nil?
+
+      if user.destroy
+        { deletedId: inputs[:id] }
+      end
+    }
+  end
 end
