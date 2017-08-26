@@ -29,6 +29,7 @@ module GraphqlOnRails
     config.generators.system_tests = nil
     config.autoload_paths << Rails.root.join('app/graphql')
     config.autoload_paths << Rails.root.join('app/graphql/types')
+    config.autoload_paths << Rails.root.join('app/graphql/mutations')
 
   end
 end
