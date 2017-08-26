@@ -4,7 +4,9 @@ module UserMutations
 
     input_field :name, !types.String
     input_field :email, !types.String
+
     return_field :user, UserType
+    return_field :errors, types.String
 
     resolve ->(object, inputs, ctx) {
 
